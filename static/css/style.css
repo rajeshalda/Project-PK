@@ -1,0 +1,138 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Photo Grid Styling */
+.background-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    transition: filter 0.5s ease; /* Smooth transition for blur removal */
+}
+
+/* Each photo in the grid */
+.background-photo-grid .photo {
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.background-photo-grid .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures images maintain aspect ratio and cover the container */
+    display: block;
+    transition: transform 0.3s ease-in-out;
+}
+
+.background-photo-grid .photo:hover img {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* Blurred background effect */
+.blur {
+    filter: blur(10px); /* Blur the background initially */
+}
+
+/* Modal Styling */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: none; /* Hidden initially */
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #FF5733;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #FF4500;
+}
+
+/* Guestbook Form Styling */
+#guestbook {
+    margin: 50px auto;
+    padding: 20px;
+    width: 60%;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#guestbook h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+input[type="text"], textarea {
+    width: 80%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    font-family: 'Arial', sans-serif;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+    height: 80px;
+}
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #FF5733;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #FF4500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px) {
+    #guestbook {
+        width: 90%;
+    }
+
+    input[type="text"], textarea {
+        width: 100%;
+    }
+}

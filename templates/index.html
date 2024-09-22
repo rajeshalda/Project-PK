@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<!-- Background Music -->
+<audio id="bg-music" loop>
+    <source src="{{ url_for('static', filename='audio/happy_birthday.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio tag.
+</audio>
+
+<!-- Background Photo Grid -->
+<div id="background" class="background-photo-grid">
+    {% for photo in photos %}
+    <div class="photo">
+        <img src="{{ url_for('static', filename='images/' + photo) }}" alt="Photo of [Friend's Name]" loading="lazy">
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Modal (Gift Opening) -->
+<div id="open-gift-modal" class="modal">
+    <div class="modal-content">
+        <h1>🎁 Open Your Gift! 🎁</h1>
+        <button id="open-gift-button" onclick="openGift()">Open Your Gift</button>
+    </div>
+</div>
+
+
+<!-- Confetti Animation Script -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+<!-- JavaScript for Modal, Confetti, and Blur Removal -->
+<script>
+    // Function to handle the "Open Your Gift" action
+    function openGift() {
+        // Start background music
+        var audio = document.getElementById('bg-music');
+        audio.play();
+
+        // Launch confetti
+        startConfetti();
+
+        // Remove the blur from the background photo grid
+        document.getElementById('background').classList.remove('blur');
+
+        // Hide the modal
+        document.getElementById('open-gift-modal').style.display = 'none';
+    }
+
+    // Function to start continuous confetti
+    function startConfetti() {
+        const confettiDuration = 10000; // Confetti duration: 10 seconds
+        const confettiInterval = 300;   // Interval between confetti batches
+        const end = Date.now() + confettiDuration;
+
+        (function frame() {
+            confetti({
+                particleCount: 5,
+                angle: 90,
+                spread: 90,
+                origin: { x: Math.random(), y: 0 }, // Random x position, y = 0 (top of the screen)
+                gravity: 1.2,
+                drift: 0.5
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        })();
+
+        // Repeat confetti at intervals until the duration ends
+        setInterval(() => {
+            if (Date.now() < end) {
+                confetti({
+                    particleCount: 5,
+                    angle: 90,
+                    spread: 90,
+                    origin: { x: Math.random(), y: 0 },
+                    gravity: 1.2,
+                    drift: 0.5
+                });
+            }
+        }, confettiInterval);
+    }
+
+    // Ensure modal shows up on page load
+    window.onload = function() {
+        document.getElementById('open-gift-modal').style.display = 'flex';
+    };
+</script>
+
+</body>
+</html>
