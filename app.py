@@ -26,10 +26,5 @@ def add_message():
         messages.append({'name': name, 'message': message})
     return redirect('/')
 
-# New route to fetch messages for live updates
-@app.route('/get_messages')
-def get_messages():
-    return jsonify({'messages': messages})
-
 if __name__ == '__main__':
     app.run(debug=True)
