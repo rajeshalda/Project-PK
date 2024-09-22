@@ -5,22 +5,100 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday!</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Blur applied permanently to the background gallery */
+        .blur {
+            filter: blur(8px); /* Blur effect applied to the background */
+        }
+
+        /* Photo Grid Scrollable Wrapper */
+        .scrollable-gallery {
+            display: flex;
+            overflow-x: hidden; /* Hide the horizontal scrollbar */
+            scroll-behavior: smooth; /* Smooth scrolling */
+        }
+
+        #bg-video {
+            display: none; /* Video starts hidden */
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            background-color: black; /* Ensure a black background behind the video */
+            pointer-events: none; /* Disable all interaction with the video */
+        }
+
+        /* Floating Happy Birthday message */
+        #happy-birthday-message {
+            display: none; /* Initially hidden */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            color: #ff69b4;
+            z-index: 10000;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Keyframes for floating text */
+        @keyframes float {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateY(0); /* Initial and final position */
+            }
+            50% {
+                transform: translate(-50%, -50%) translateY(-20px); /* Floating upward */
+            }
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark overlay */
+            z-index: 10000;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            z-index: 10001; /* Ensure modal is on top of the blur */
+        }
+
+        #background {
+            transition: filter 0.5s ease; /* Smooth transition for blur effect */
+        }
+    </style>
 </head>
 <body>
 
-<!-- Background Music -->
-<audio id="bg-music" loop>
-    <source src="{{ url_for('static', filename='audio/happy_birthday.mp3') }}" type="audio/mpeg">
-    Your browser does not support the audio tag.
-</audio>
+<!-- Happy Birthday Message -->
+<div id="happy-birthday-message">Happy Birthday Poonam 😍 Enjoy Your Custom Domain Gift 🌐 </div>
 
-<!-- Background Photo Grid -->
-<div id="background" class="background-photo-grid">
-    {% for photo in photos %}
-    <div class="photo">
-        <img src="{{ url_for('static', filename='images/' + photo) }}" alt="Photo of [Friend's Name]" loading="lazy">
+<!-- Background Video -->
+<video id="bg-video" preload="auto">
+    <source src="{{ url_for('static', filename='videos/birthday_video.mp4') }}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<!-- Scrollable Photo Grid -->
+<div class="scrollable-gallery" id="gallery"> 
+    <div id="background" class="background-photo-grid blur"> <!-- Background is blurred on load -->
+        {% for photo in photos %}
+        <div class="photo">
+            <img src="{{ url_for('static', filename='images/' + photo) }}" alt="Photo of [Friend's Name]" loading="lazy">
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
 </div>
 
 <!-- Modal (Gift Opening) -->
@@ -31,69 +109,9 @@
     </div>
 </div>
 
-
 <!-- Confetti Animation Script -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-
-<!-- JavaScript for Modal, Confetti, and Blur Removal -->
-<script>
-    // Function to handle the "Open Your Gift" action
-    function openGift() {
-        // Start background music
-        var audio = document.getElementById('bg-music');
-        audio.play();
-
-        // Launch confetti
-        startConfetti();
-
-        // Remove the blur from the background photo grid
-        document.getElementById('background').classList.remove('blur');
-
-        // Hide the modal
-        document.getElementById('open-gift-modal').style.display = 'none';
-    }
-
-    // Function to start continuous confetti
-    function startConfetti() {
-        const confettiDuration = 10000; // Confetti duration: 10 seconds
-        const confettiInterval = 300;   // Interval between confetti batches
-        const end = Date.now() + confettiDuration;
-
-        (function frame() {
-            confetti({
-                particleCount: 5,
-                angle: 90,
-                spread: 90,
-                origin: { x: Math.random(), y: 0 }, // Random x position, y = 0 (top of the screen)
-                gravity: 1.2,
-                drift: 0.5
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
-        })();
-
-        // Repeat confetti at intervals until the duration ends
-        setInterval(() => {
-            if (Date.now() < end) {
-                confetti({
-                    particleCount: 5,
-                    angle: 90,
-                    spread: 90,
-                    origin: { x: Math.random(), y: 0 },
-                    gravity: 1.2,
-                    drift: 0.5
-                });
-            }
-        }, confettiInterval);
-    }
-
-    // Ensure modal shows up on page load
-    window.onload = function() {
-        document.getElementById('open-gift-modal').style.display = 'flex';
-    };
-</script>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 </body>
 </html>
